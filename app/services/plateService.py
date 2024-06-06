@@ -2,10 +2,12 @@
 
 import sqlite3
 from typing import Dict
-from .baseService import BaseService
+
+# from .baseService import BaseService
+from .iPlateService import IPlateService
 
 
-class PlateService(BaseService):
+class PlateService(IPlateService):
 
     def __init__(self, db: sqlite3.Connection) -> None:
         self.db = db

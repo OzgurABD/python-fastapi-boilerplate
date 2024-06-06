@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-
 from app.api.routes.v1 import plate
 
 api_router = APIRouter()

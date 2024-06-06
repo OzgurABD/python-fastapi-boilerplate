@@ -10,8 +10,7 @@ def getPlateById(
     id: str,
     plate_service: plateService.PlateService = Provide[Application.services.plate],
 ) -> None:
-    result = plate_service.getById(id)
-    return result
+    return plate_service.getById(id)
 
 
 @inject
