@@ -1,7 +1,7 @@
 """Services module."""
 
 import sqlite3
-from typing import Dict
+from models.serviceResult import ServiceResult
 
 # from .baseService import BaseService
 from .iPlateService import IPlateService
@@ -13,10 +13,10 @@ class PlateService(IPlateService):
         self.db = db
         super().__init__()
 
-    def getById(self, id: str) -> Dict[str, str]:
-        self.logger.debug("Plate %s has been found in database", id)
-        return {"id": id, "result": "..."}
+    def getById(id: str) -> ServiceResult[str]:
+        # self.logger.debug("Plate %s has been found in database", id)
+        return ServiceResult[str](data=id, success=True)
 
-    def getByString(self, plateString: str) -> Dict[str, str]:
-        self.logger.debug("Plate %s has been found in database", plateString)
-        return {"plateString": plateString, "result": "..."}
+    def getByString(plateString: str) -> ServiceResult[str]:
+        # self.logger.debug("Plate %s has been found in database", plateString)
+        return ServiceResult[str](data=plateString, success=True)

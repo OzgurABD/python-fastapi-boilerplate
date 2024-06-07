@@ -1,8 +1,9 @@
 from typing import Any
 from fastapi import APIRouter
+from business.plateBusiness import PlateBusiness
+from models.responses.plateResponseModel import PlateResponseModel
 from models.plate import ItemPlate, ItemsPlate, Message
 
-# from app.business.plateBusiness import getPlateById
 
 router = APIRouter()
 
@@ -11,7 +12,7 @@ router = APIRouter()
 # ) -> Any:
 
 
-@router.get("/", response_model=ItemsPlate)
+@router.get("/", response_model=list[PlateResponseModel])
 def read_items(skip: int = 0, limit: int = 100) -> Any:
     """
     Retrieve items.
@@ -19,16 +20,15 @@ def read_items(skip: int = 0, limit: int = 100) -> Any:
     return ItemsPlate(data=[], count=0)
 
 
-@router.get("/{id}", response_model=ItemPlate)
-def read_item(id: int) -> ItemPlate:
+@router.get("/{id}", response_model=PlateResponseModel)
+def read_item(id: str) -> ItemPlate:
     """
     Get item by ID.
     """
-    # return getPlateById(id)
-    return ItemPlate(id=id, plateString="test")
+    return PlateBusiness.getPlateById(id)
 
 
-@router.post("/", response_model=ItemPlate)
+@router.post("/", response_model=PlateResponseModel)
 def create_item(*, item_in: ItemsPlate) -> Any:
     """
     Create new item.
@@ -36,7 +36,7 @@ def create_item(*, item_in: ItemsPlate) -> Any:
     return ItemPlate()
 
 
-@router.put("/{id}", response_model=ItemPlate)
+@router.put("/{id}", response_model=PlateResponseModel)
 def update_item(*, id: int, item_in: ItemsPlate) -> Any:
     """
     Update an item.
