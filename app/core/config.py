@@ -46,12 +46,12 @@ class Settings(BaseSettings):
         []
     )
 
-    PROJECT_NAME: str
+    PROJECT_NAME: str = "Plate Project"
     SENTRY_DSN: HttpUrl | None = None
-    POSTGRES_SERVER: str
+    POSTGRES_SERVER: str | None = None
     POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
+    POSTGRES_USER: str | None = None
+    POSTGRES_PASSWORD: str | None = None
     POSTGRES_DB: str = ""
 
     @computed_field  # type: ignore[misc]
@@ -92,8 +92,8 @@ class Settings(BaseSettings):
     # TODO: update type to EmailStr when sqlmodel supports it
     EMAIL_TEST_USER: str = "test@example.com"
     # TODO: update type to EmailStr when sqlmodel supports it
-    FIRST_SUPERUSER: str
-    FIRST_SUPERUSER_PASSWORD: str
+    FIRST_SUPERUSER: str | None = None
+    FIRST_SUPERUSER_PASSWORD: str | None = None
     USERS_OPEN_REGISTRATION: bool = False
 
     def _check_default_secret(self, var_name: str, value: str | None) -> None:

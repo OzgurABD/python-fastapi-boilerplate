@@ -1,7 +1,8 @@
 from typing import Any
 from fastapi import APIRouter
-from app.models.plate import ItemPlate, ItemsPlate, Message
-from app.business.plateBusiness import getPlateById
+from models.plate import ItemPlate, ItemsPlate, Message
+
+# from app.business.plateBusiness import getPlateById
 
 router = APIRouter()
 
@@ -23,7 +24,8 @@ def read_item(id: int) -> Any:
     """
     Get item by ID.
     """
-    return getPlateById(id)
+    # return getPlateById(id)
+    return id
 
 
 @router.post("/", response_model=ItemPlate)

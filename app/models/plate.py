@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -32,11 +33,11 @@ class User(UserBase, table=True):
     items: list["Item"] = Relationship(back_populates="owner")
 
 
-class ItemPlate:
+class ItemPlate(BaseModel):
     id: int
     plateString: int
 
 
-class ItemsPlate:
+class ItemsPlate(BaseModel):
     data: list[ItemPlate]
     count: int
