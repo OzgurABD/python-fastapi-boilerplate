@@ -20,12 +20,12 @@ def read_items(skip: int = 0, limit: int = 100) -> Any:
 
 
 @router.get("/{id}", response_model=ItemPlate)
-def read_item(id: int) -> Any:
+def read_item(id: int) -> ItemPlate:
     """
     Get item by ID.
     """
     # return getPlateById(id)
-    return id
+    return ItemPlate(id=id, plateString="test")
 
 
 @router.post("/", response_model=ItemPlate)

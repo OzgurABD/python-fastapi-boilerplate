@@ -35,7 +35,7 @@ class User(UserBase, table=True):
 
 class ItemPlate(BaseModel):
     id: int
-    plateString: int
+    plateString: str
 
 
 class ItemsPlate(BaseModel):
