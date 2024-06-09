@@ -1,9 +1,9 @@
 """Business Module"""
 
 # from dependency_injector.wiring import Provide, inject
-
 from business.iPlateBusiness import IPlateBusiness
 from services.plateService import PlateService
+from business.plateBusinessValidation import PlateBusinessValidation
 from models.serviceResult import ServiceResult
 from models.responses.plateResponseModel import PlateResponseModel
 
@@ -18,6 +18,7 @@ class PlateBusiness(IPlateBusiness):
         id: str,
         # plate_service: plateService.PlateService = Provide[Application.services.plate],
     ) -> PlateResponseModel:
+        PlateBusinessValidation.getPlateByIdValidation(id)
         result: ServiceResult = PlateService.getById(id)
         return PlateResponseModel(id=id, plateString=result.data)
 

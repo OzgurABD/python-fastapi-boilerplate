@@ -1,4 +1,5 @@
 import logging
+import uuid
 from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -8,19 +9,27 @@ from starlette.middleware.base import BaseHTTPMiddleware
 logger = logging.getLogger(__name__)
 
 
+class AuthException(BaseException): ...
+
+
 class ValidationException(Exception):
+    def __init__(self, message, errorCode):
+        super().__init__(message)
+        self.statusCode = 400
+        self.errorCode = errorCode
+        self.message = message
+        self.errorId = str(uuid.uuid4())
+
+
+class BusinessException(BaseException):
     pass
 
 
-class BusinessException(Exception):
+class IntegrationException(BaseException):
     pass
 
 
-class IntegrationException(Exception):
-    pass
-
-
-class SdkException(Exception):
+class SdkException(BaseException):
     pass
 
 
@@ -38,11 +47,29 @@ class ExceptionHandlerMiddleware(BaseHTTPMiddleware):
             )
         except Exception as e:
             # logging.error('An error occurred: %s', str(e))
-            logger.exception(msg=e.__class__.__name__, args=e.args)
+            # logger.exception(msg=e.__class__.__name__, args=e.args)
+            exceptionClassName = e.__class__.__name__
+            if (
+                exceptionClassName == "AuthException"
+                or exceptionClassName == "ValidationException"
+                or exceptionClassName == "BusinessException"
+                or exceptionClassName == "IntegrationException"
+                or exceptionClassName == "SdkException"
+            ):
+                return JSONResponse(
+                    status_code=e.statusCode,
+                    content={
+                        "errorId": e.errorId,
+                        "errorCode": e.errorCode,
+                        "type": e.__class__.__name__,
+                        "message": e.message,
+                    },
+                )
+
             return JSONResponse(
                 status_code=500,
                 content={
-                    "error": "Internal Server Error",
-                    "message": "An unexpected error occurred.",
+                    "type": e.__class__.__name__,
+                    "message": e.args,
                 },
             )
