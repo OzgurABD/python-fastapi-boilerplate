@@ -1,8 +1,10 @@
 from typing import Any
 from fastapi import APIRouter
 from business.plateBusiness import PlateBusiness
-from models.responses.plateResponseModel import PlateResponseModel
-from models.plate import ItemPlate, ItemsPlate, Message
+from models.responses.plateResponseModel import PlateResponseModel, PlatesResponseModel
+from models.requests.insertPlateRequestModel import InsertPlateRequestModel
+from models.baseModel import Message
+from mappers.mapToDto.plateDtoMapper import *
 
 
 router = APIRouter()
@@ -12,16 +14,16 @@ router = APIRouter()
 # ) -> Any:
 
 
-@router.get("/", response_model=list[PlateResponseModel])
-def read_items(skip: int = 0, limit: int = 100) -> Any:
+@router.get("/", response_model=list[PlatesResponseModel])
+def read_items(skip: int = 0, limit: int = 100) -> PlatesResponseModel:
     """
     Retrieve items.
     """
-    return ItemsPlate(data=[], count=0)
+    return PlatesResponseModel(data=[], count=0)
 
 
 @router.get("/{id}", response_model=PlateResponseModel)
-def read_item(id: str) -> ItemPlate:
+def read_item(id: str) -> PlateResponseModel:
     """
     Get item by ID.
     """
@@ -29,19 +31,20 @@ def read_item(id: str) -> ItemPlate:
 
 
 @router.post("/", response_model=PlateResponseModel)
-def create_item(*, item_in: ItemsPlate) -> Any:
+def create_item(model: InsertPlateRequestModel) -> PlateResponseModel:
     """
     Create new item.
     """
-    return ItemPlate()
+    # return PlateBusiness.postPlate(model.MapToCreateDtoExt())
+    return PlateBusiness.postPlate(model.MapToCreateDto())
 
 
 @router.put("/{id}", response_model=PlateResponseModel)
-def update_item(*, id: int, item_in: ItemsPlate) -> Any:
+def update_item(*, id: int, model: PlateResponseModel) -> Any:
     """
     Update an item.
     """
-    return ItemPlate()
+    return PlateResponseModel()
 
 
 @router.delete("/{id}")

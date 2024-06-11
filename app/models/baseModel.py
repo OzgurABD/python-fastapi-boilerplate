@@ -31,13 +31,3 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
     items: list["Item"] = Relationship(back_populates="owner")
-
-
-class ItemPlate(BaseModel):
-    id: int
-    plateString: str
-
-
-class ItemsPlate(BaseModel):
-    data: list[ItemPlate]
-    count: int
