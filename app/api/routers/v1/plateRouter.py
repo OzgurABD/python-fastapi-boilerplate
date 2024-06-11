@@ -1,5 +1,5 @@
 from typing import Any
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from business.plateBusiness import PlateBusiness
 from models.responses.plateResponseModel import PlateResponseModel, PlatesResponseModel
 from models.requests.insertPlateRequestModel import InsertPlateRequestModel
@@ -14,8 +14,17 @@ router = APIRouter()
 # ) -> Any:
 
 
+async def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):
+    return {"q": q, "skip": skip, "limit": limit}
+
+
+@router.get("/check")
+async def read_items(commons: dict = Depends(common_parameters)):
+    return commons
+
+
 @router.get("/", response_model=list[PlatesResponseModel])
-def read_items(skip: int = 0, limit: int = 100) -> PlatesResponseModel:
+async def read_items(skip: int = 0, limit: int = 100) -> PlatesResponseModel:
     """
     Retrieve items.
     """
@@ -23,7 +32,7 @@ def read_items(skip: int = 0, limit: int = 100) -> PlatesResponseModel:
 
 
 @router.get("/{id}", response_model=PlateResponseModel)
-def read_item(id: str) -> PlateResponseModel:
+async def read_item(id: str) -> PlateResponseModel:
     """
     Get item by ID.
     """
@@ -31,16 +40,17 @@ def read_item(id: str) -> PlateResponseModel:
 
 
 @router.post("/", response_model=PlateResponseModel)
-def create_item(model: InsertPlateRequestModel) -> PlateResponseModel:
+async def create_item(model: InsertPlateRequestModel) -> PlateResponseModel:
     """
     Create new item.
     """
+    # TODO MapToCreateDtoExt alternatives to MapToCreateDto, The method (MapToCreateDto) is located in the class it depends on.
     # return PlateBusiness.postPlate(model.MapToCreateDtoExt())
     return PlateBusiness.postPlate(model.MapToCreateDto())
 
 
 @router.put("/{id}", response_model=PlateResponseModel)
-def update_item(*, id: int, model: PlateResponseModel) -> Any:
+async def update_item(*, id: int, model: PlateResponseModel) -> Any:
     """
     Update an item.
     """
@@ -48,29 +58,8 @@ def update_item(*, id: int, model: PlateResponseModel) -> Any:
 
 
 @router.delete("/{id}")
-def delete_item(id: int) -> Message:
+async def delete_item(id: int) -> Message:
     """
     Delete an item.
     """
     return Message(message="Item deleted successfully")
-
-
-# items = {"foo": "The Foo Wrestlers"}
-
-
-# @app.get("/items/{item_id}")
-# async def read_item(item_id: str):
-#     if item_id not in items:
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     return {"item": items[item_id]}
-
-
-# @app.get("/items-header/{item_id}")
-# async def read_item_header(item_id: str):
-#     if item_id not in items:
-#         raise HTTPException(
-#             status_code=404,
-#             detail="Item not found",
-#             headers={"X-Error": "There goes my error"},
-#         )
-#     return {"item": items[item_id]}
