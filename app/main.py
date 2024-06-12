@@ -1,14 +1,11 @@
 import sentry_sdk
-
-# import logging
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 from api.main import apiRouter
 from core.config import settings
+from middlewares.requestLog import RouterLoggingMiddleware
 from middlewares.exception import ExceptionHandlerMiddleware
-
-# from middlewares.requestLog import RouterLoggingMiddleware
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -26,10 +23,6 @@ app = FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 
-app.add_middleware(ExceptionHandlerMiddleware)
-
-# app.add_middleware(RouterLoggingMiddleware, logger=logging.getLogger(__name__))
-
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
@@ -41,6 +34,9 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+app.add_middleware(RouterLoggingMiddleware)
+app.add_middleware(ExceptionHandlerMiddleware)
 
 # Set Router
 app.include_router(apiRouter, prefix=settings.API_V1_STR)
