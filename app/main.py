@@ -6,6 +6,7 @@ from api.main import apiRouter
 from core.config import settings
 from middlewares.requestLog import RouterLoggingMiddleware
 from middlewares.exception import ExceptionHandlerMiddleware
+from middlewares.oneLog import oneLogger
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -43,3 +44,5 @@ app.include_router(apiRouter, prefix=settings.API_V1_STR)
 
 # initial tables
 # Base.metadata.create_all(bind=engine)
+
+oneLogger.info("App Has Started")
