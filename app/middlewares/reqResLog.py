@@ -1,7 +1,10 @@
+import json
+import os
 import time
 import logging
 import logging.config
 from typing import Callable, Optional
+import uuid
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -15,49 +18,46 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
+
+        requestBody = None
+        body = await request.body()
+        if body:
+            requestBody = json.loads(body.decode("utf-8"))
+
         startTime = time.time()
         response: Response = await call_next(request)
-        processTime = time.time() - startTime
+        processTime = (time.time() - startTime) * 1000
+        processTimeFormated = "{0:.2f}".format(processTime)
+
         response.headers["X-Process-Time"] = str(processTime)
-        self.logDataFormatter(request, response, startTime, processTime)
+        await self.logDataFormatter(
+            request, response, startTime, processTime, requestBody
+        )
         return response
 
     async def logDataFormatter(
-        self, request: Request, response: Response, startTime: float, processTime: float
+        self,
+        request: Request,
+        response: Response,
+        startTime: float,
+        processTime: float,
+        requestBody: any,
     ) -> None:
         logDataDict = dict()
+        logDataDict["transactionId"] = str(uuid.uuid4())
         logDataDict["ip"] = request.client.host
         logDataDict["startTime"] = startTime
         logDataDict["processTime"] = processTime  # f"{processTime:0.4f}s"
-        logDataDict["request"] = await self.reqLogFormat(request)
-        logDataDict["response"] = await self.resLogFormat(response)
-        self._logger.info(logDataDict)
-
-    async def reqLogFormat(self, request: Request) -> str:
-        _path = (
+        logDataDict["method"] = request.method
+        logDataDict["requestUrl"] = request.url.hostname
+        logDataDict["path"] = (
             f"{request.url.path}?{request.query_params}"
             if request.query_params
             else request.url.path
         )
-
-        data = {
-            "path": _path,
-            "method": request.method,
-        }
-
-        try:
-            data["body"] = await request.json()
-        except:
-            data["body"] = None
-
-        return data
-
-    async def resLogFormat(self, response: Response) -> str:
-
-        data = {
-            "statusCode": response.status_code,
-        }
-
-        print(response)
-
-        return ""
+        logDataDict["statusCode"] = response.status_code
+        logDataDict["requestBody"] = requestBody
+        logDataDict["env"] = os.environ.get("ENV")
+        logDataDict["region"] = os.environ.get("REGION")
+        logDataDict["name"] = os.environ.get("NAME")
+        self._logger.info(logDataDict)
