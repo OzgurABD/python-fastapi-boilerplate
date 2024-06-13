@@ -4,7 +4,7 @@ from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 from api.main import apiRouter
 from core.config import settings
-from middlewares.requestLog import RouterLoggingMiddleware
+from middlewares.r2Log import RouterLoggingMiddleware
 from middlewares.exception import ExceptionHandlerMiddleware
 from middlewares.oneLog import oneLogger
 
