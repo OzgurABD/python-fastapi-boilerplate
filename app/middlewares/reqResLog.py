@@ -1,10 +1,10 @@
-import json
 import os
 import time
+import uuid
+import json
 import logging
 import logging.config
 from typing import Callable, Optional
-import uuid
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -28,8 +28,8 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         response: Response = await call_next(request)
         processTime = (time.time() - startTime) * 1000
         processTimeFormated = "{0:.2f}".format(processTime)
-
         response.headers["X-Process-Time"] = str(processTime)
+        response.headers["X-Process-Time-Formated"] = str(processTimeFormated)
         await self.logDataFormatter(
             request, response, startTime, processTime, requestBody
         )
@@ -57,6 +57,7 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         )
         logDataDict["statusCode"] = response.status_code
         logDataDict["requestBody"] = requestBody
+        # logDataDict["responseBody"] = response.body
         logDataDict["env"] = os.environ.get("ENV")
         logDataDict["region"] = os.environ.get("REGION")
         logDataDict["name"] = os.environ.get("NAME")

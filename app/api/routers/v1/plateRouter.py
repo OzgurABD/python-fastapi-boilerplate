@@ -39,7 +39,7 @@ async def read_item(id: str) -> PlateResponseModel:
     return PlateBusiness.getPlateById(id)
 
 
-@router.post("/", response_model=PlateResponseModel)
+@router.post("", response_model=PlateResponseModel)
 async def create_item(model: InsertPlateRequestModel) -> PlateResponseModel:
     """
     Create new item.

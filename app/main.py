@@ -40,7 +40,7 @@ app.add_middleware(RouterLoggingMiddleware)
 app.add_middleware(ExceptionHandlerMiddleware)
 
 # Set Router
-app.include_router(apiRouter, prefix=settings.API_V1_STR)
+app.include_router(apiRouter, prefix=settings.API_V1_STR, include_in_schema=False)
 
 # initial tables
 # Base.metadata.create_all(bind=engine)
