@@ -36,8 +36,8 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-app.add_middleware(RouterLoggingMiddleware)
 app.add_middleware(ExceptionHandlerMiddleware)
+app.add_middleware(RouterLoggingMiddleware)
 
 # Set Router
 app.include_router(apiRouter, prefix=settings.API_V1_STR, include_in_schema=False)
