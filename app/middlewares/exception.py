@@ -1,4 +1,3 @@
-import logging
 import uuid
 from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
@@ -6,13 +5,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 # Configure the logger
 # logging.basicConfig(filename='error.log', level=logging.ERROR)
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
-class AuthException(BaseException): ...
-
-
-class ValidationException(Exception):
+class CustomException(Exception):
     def __init__(self, message, errorCode):
         super().__init__(message)
         self.statusCode = 400
@@ -21,16 +17,19 @@ class ValidationException(Exception):
         self.errorId = str(uuid.uuid4())
 
 
-class BusinessException(BaseException):
-    pass
+class ValidationException(CustomException): ...
 
 
-class IntegrationException(BaseException):
-    pass
+class AuthException(CustomException): ...
 
 
-class SdkException(BaseException):
-    pass
+class BusinessException(CustomException): ...
+
+
+class IntegrationException(CustomException): ...
+
+
+class SdkException(CustomException): ...
 
 
 class ExceptionHandlerMiddleware(BaseHTTPMiddleware):

@@ -6,6 +6,7 @@ import logging
 import logging.config
 from typing import Callable, Optional
 from fastapi import FastAPI, Request, Response
+from fastapi.concurrency import iterate_in_threadpool
 from starlette.middleware.base import BaseHTTPMiddleware
 
 
@@ -30,8 +31,13 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         processTimeFormated = "{0:.2f}".format(processTime)
         response.headers["X-Process-Time"] = str(processTime)
         response.headers["X-Process-Time-Formated"] = str(processTimeFormated)
+
+        responseContentStream = [section async for section in response.body_iterator]
+        response.body_iterator = iterate_in_threadpool(iter(responseContentStream))
+        responseBody = responseContentStream[0].decode()
+
         await self.logDataFormatter(
-            request, response, startTime, processTime, requestBody
+            request, response, startTime, processTime, requestBody, responseBody
         )
         return response
 
@@ -42,6 +48,7 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         startTime: float,
         processTime: float,
         requestBody: any,
+        responseBody: any,
     ) -> None:
         logDataDict = dict()
         logDataDict["transactionId"] = str(uuid.uuid4())
@@ -57,7 +64,7 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         )
         logDataDict["statusCode"] = response.status_code
         logDataDict["requestBody"] = requestBody
-        # logDataDict["responseBody"] = response.body
+        logDataDict["responseBody"] = responseBody
         logDataDict["env"] = os.environ.get("ENV")
         logDataDict["region"] = os.environ.get("REGION")
         logDataDict["name"] = os.environ.get("NAME")
