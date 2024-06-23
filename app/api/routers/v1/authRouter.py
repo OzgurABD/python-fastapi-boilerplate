@@ -17,7 +17,7 @@ async def login(userLogin: OAuth2PasswordRequestForm = Depends()):
     user = None  # userService.login(userLogin)
     if not user:
         raise ValidationException("Incorrect username or password", "L.001")
-    token = createToken(data={"userId": user["userId"]})
+    token = createToken(data={"userId": user["userId"], "role": "admin"})
     return {"token": token, "tokenType": "bearer"}
 
 
@@ -30,11 +30,11 @@ async def register(user: UserLogin):
 
 @router.get("/checkAll")
 @authorize(role=["admin", "superAdmin"])
-async def checkAll(user: dict = Depends(contextUser)):
+async def checkAll(currentUser: dict = Depends(contextUser)):
     return {"message": "This endpoint is accessible to admin and superadmin only"}
 
 
 @router.get("/checkSuperAdmin")
 @authorize(role=["superAdmin"])
-async def checkSuperAdmin(user: dict = Depends(contextUser)):
+async def checkSuperAdmin(currentUser: dict = Depends(contextUser)):
     return {"message": "This endpoint is accessible to superadmin only"}
