@@ -20,6 +20,11 @@ class NewPassword(SQLModel):
     new_password: str
 
 
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
 class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
     is_active: bool = True
