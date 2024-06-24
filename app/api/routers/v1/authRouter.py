@@ -34,13 +34,13 @@ async def register(user: UserLogin):
     return {"message": "User registered successfully"}
 
 
-@router.get("/checkAll")
-@authorize(role=["admin", "superAdmin"])
-async def checkAll(currentUser: dict = Depends(contextUser)):
-    return {"message": "This endpoint is accessible to admin and superadmin only"}
+@router.get("/checkAdmin")
+@authorize(role="admin")
+async def checkAdmin(currentUser: dict = Depends(contextUser)):
+    return {"message": "This endpoint is accessible to admin only"}
 
 
 @router.get("/checkSuperAdmin")
-@authorize(role=["superAdmin"])
+@authorize(role="superAdmin")
 async def checkSuperAdmin(currentUser: dict = Depends(contextUser)):
     return {"message": "This endpoint is accessible to superadmin only"}
