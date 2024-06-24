@@ -1,7 +1,8 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from middlewares.exception import ValidationException
-from models.baseModel import UserLogin
+from models.baseModel import Token, TokenPayload, UserLogin
 from core.authentication import (
     createToken,
     hashPassword,
@@ -10,6 +11,7 @@ from core.authentication import (
 from core.authorization import authorize
 
 router = APIRouter()
+CurrentUser = Annotated[TokenPayload, Depends(contextUser)]
 
 
 @router.post("/login")
@@ -24,7 +26,7 @@ async def login(userLogin: OAuth2PasswordRequestForm = Depends()):
             "roles": ["admin"],
         }
     )
-    return {"token": token, "tokenType": "bearer"}
+    return Token(token)
 
 
 @router.post("/register")
@@ -36,11 +38,11 @@ async def register(user: UserLogin):
 
 @router.get("/checkAdmin")
 @authorize(role="admin")
-async def checkAdmin(currentUser: dict = Depends(contextUser)):
+async def checkAdmin(currentUser: CurrentUser):
     return {"message": "This endpoint is accessible to admin only"}
 
 
 @router.get("/checkSuperAdmin")
 @authorize(role="superAdmin")
-async def checkSuperAdmin(currentUser: dict = Depends(contextUser)):
+async def checkSuperAdmin(currentUser: CurrentUser):
     return {"message": "This endpoint is accessible to superadmin only"}

@@ -4,6 +4,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from models.baseModel import TokenPayload
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
@@ -44,4 +45,4 @@ async def contextUser(token: str = Depends(oauth2_scheme)):
             return None
     except JWTError:
         return None
-    return {"userId": userId, "userName": userName, "roles": roles}
+    return TokenPayload(userId, userName, roles)

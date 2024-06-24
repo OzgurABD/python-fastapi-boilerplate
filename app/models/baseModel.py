@@ -7,29 +7,30 @@ class Message(SQLModel):
 
 
 class Token(SQLModel):
-    access_token: str
-    token_type: str = "bearer"
+    token: str
+    tokenType: str = "bearer"
 
 
 class TokenPayload(SQLModel):
-    sub: int | None = None
+    userId: str | None = None
+    userName: str | None = None
+    roles: list | None = None
 
 
 class NewPassword(SQLModel):
     token: str
-    new_password: str
+    newPassword: str
 
 
 class UserLogin(BaseModel):
-    username: str
+    userName: str
     password: str
 
 
 class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
-    is_active: bool = True
-    is_superuser: bool = False
-    full_name: str | None = None
+    isActive: bool = True
+    fullName: str | None = None
 
 
 class User(UserBase, table=True):
