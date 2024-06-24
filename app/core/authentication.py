@@ -38,8 +38,10 @@ async def contextUser(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         userId: str = payload.get("userId")
+        userName: str = payload.get("userName")
+        roles: list = payload.get("roles")
         if userId is None:
             return None
     except JWTError:
         return None
-    return {"userId": userId}
+    return {"userId": userId, "userName": userName, "roles": roles}

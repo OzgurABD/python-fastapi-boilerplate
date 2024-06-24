@@ -17,7 +17,13 @@ async def login(userLogin: OAuth2PasswordRequestForm = Depends()):
     user = None  # userService.login(userLogin)
     if not user:
         raise ValidationException("Incorrect username or password", "L.001")
-    token = createToken(data={"userId": user["userId"], "role": "admin"})
+    token = createToken(
+        data={
+            "userId": user["userId"],
+            "userName": user["userName"],
+            "roles": ["admin"],
+        }
+    )
     return {"token": token, "tokenType": "bearer"}
 
 
