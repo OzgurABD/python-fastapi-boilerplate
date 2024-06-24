@@ -2,10 +2,9 @@
 
 import sqlite3
 from typing import Dict
-from .baseService import BaseService
 
 
-class AuthService(BaseService):
+class AuthService:
 
     def __init__(self, db: sqlite3.Connection, token_ttl: int) -> None:
         self.db = db

@@ -1,17 +1,15 @@
-from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from middlewares.exception import ValidationException
-from models.baseModel import Token, TokenPayload, UserLogin
+from models.baseModel import Token, UserLogin
 from core.authentication import (
     createToken,
     hashPassword,
-    contextUser,
 )
 from core.authorization import authorize
+from deps import CurrentUser
 
 router = APIRouter()
-CurrentUser = Annotated[TokenPayload, Depends(contextUser)]
 
 
 @router.post("/login")

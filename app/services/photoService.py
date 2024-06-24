@@ -3,10 +3,9 @@
 import sqlite3
 from typing import Dict
 from mypy_boto3_s3 import S3Client
-from .baseService import BaseService
 
 
-class PlatePhotoService(BaseService):
+class PlatePhotoService:
 
     def __init__(self, db: sqlite3.Connection, s3: S3Client) -> None:
         self.db = db

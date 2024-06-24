@@ -3,8 +3,6 @@
 import sqlite3
 from models.dtos.plateDto import CreatePlateDto, PlateDto
 from models.serviceResult import ServiceResult
-
-# from .baseService import BaseService
 from .iPlateService import IPlateService
 
 
