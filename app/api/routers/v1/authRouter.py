@@ -7,7 +7,7 @@ from core.authentication import (
     hashPassword,
 )
 from core.authorization import authorize
-from deps import CurrentUser
+from deps import CurrentUserDep
 
 router = APIRouter()
 
@@ -36,11 +36,11 @@ async def register(user: UserLogin):
 
 @router.get("/checkAdmin")
 @authorize(role="admin")
-async def checkAdmin(currentUser: CurrentUser):
+async def checkAdmin(currentUser: CurrentUserDep):
     return {"message": "This endpoint is accessible to admin only"}
 
 
 @router.get("/checkSuperAdmin")
 @authorize(role="superAdmin")
-async def checkSuperAdmin(currentUser: CurrentUser):
+async def checkSuperAdmin(currentUser: CurrentUserDep):
     return {"message": "This endpoint is accessible to superadmin only"}

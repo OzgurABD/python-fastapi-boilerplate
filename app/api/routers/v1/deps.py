@@ -1,21 +1,18 @@
 from typing import Annotated
 from fastapi import Depends
-
+from sqlmodel import Session
+from database.dbSession import getDbSession
 from models.baseModel import TokenPayload
 from core.authentication import contextUser
+
 
 # from dependency_injector import containers, providers
 # from dependency_injector.wiring import Provide, inject
 
 
-# def get_db() -> Generator[Session, None, None]:
-#     with Session(engine) as session:
-#         yield session
+DbSessionDep = Annotated[Session, Depends(getDbSession)]
 
-
-# SessionDep = Annotated[Session, Depends(get_db)]
-
-CurrentUser = Annotated[TokenPayload, Depends(contextUser)]
+CurrentUserDep = Annotated[TokenPayload, Depends(contextUser)]
 
 
 # class Service:

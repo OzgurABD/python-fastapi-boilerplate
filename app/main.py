@@ -20,6 +20,7 @@ if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
 # Set FastAPI
 app = FastAPI(
     title=settings.PROJECT_NAME,
+    docs_url=f"{settings.API_V1_STR}/docs",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
 )
