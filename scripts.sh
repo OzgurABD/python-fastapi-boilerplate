@@ -29,6 +29,11 @@ esac
     # pip list
     # pip install -r requirements/base.txt
 
+    ## To automatically generate a migration script based on your model changes, run:
+    # alembic revision --autogenerate -m "Create tables"
+    ## To apply the generated migrations to your database, execute:
+    # alembic upgrade head
+
 
     # # ALEMBIC
     # Display the current revision for a database: alembic current.
