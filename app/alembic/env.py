@@ -1,7 +1,7 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-from app.database.dbModels import SQLModel
+from database.dbModels import SQLModel
 
 
 # this is the Alembic Config object, which provides

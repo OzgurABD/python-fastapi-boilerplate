@@ -7,7 +7,7 @@ from core.authentication import (
     hashPassword,
 )
 from core.authorization import authorize
-from deps import CurrentUserDep
+from .deps import CurrentUserDep
 
 router = APIRouter()
 
