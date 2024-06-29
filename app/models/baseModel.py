@@ -1,9 +1,7 @@
+from typing import Generic, Optional
+from annotated_types import T
 from pydantic import BaseModel
-from sqlmodel import Field, Relationship, SQLModel
-
-
-class Message(SQLModel):
-    message: str
+from sqlmodel import SQLModel
 
 
 class Token(SQLModel):
@@ -17,23 +15,17 @@ class TokenPayload(SQLModel):
     roles: list | None = None
 
 
-class NewPassword(SQLModel):
-    token: str
-    newPassword: str
-
-
-class UserLogin(BaseModel):
+class Login(BaseModel):
     userName: str
     password: str
 
 
-class UserBase(SQLModel):
-    email: str = Field(unique=True, index=True)
-    isActive: bool = True
-    fullName: str | None = None
+class PaginateModel(BaseModel, Generic[T]):
+    data: Optional[T]
+    pageNumber: int
+    pageSize: int
+    totalCount: int
 
 
-class User(UserBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    hashed_password: str
-    items: list["Item"] = Relationship(back_populates="owner")
+class Message(SQLModel):
+    message: str

@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from api.routers.v1 import plateRouter, authRouter
+from api.routers.v1 import userRouter
 
 apiRouter = APIRouter()
-apiRouter.include_router(authRouter.router, prefix="/auth", tags=["auth"])
-apiRouter.include_router(plateRouter.router, prefix="/plate", tags=["plate"])
+apiRouter.include_router(userRouter.router, prefix="/user", tags=["user"])

@@ -50,7 +50,7 @@ class Settings(BaseSettings):
 
     load_dotenv()
 
-    PROJECT_NAME: str = "Plate Project"
+    PROJECT_NAME: str = "FastAPI Project"
     SENTRY_DSN: HttpUrl | None = None
     POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER")
     POSTGRES_PORT: int = os.getenv("POSTGRES_PORT")
