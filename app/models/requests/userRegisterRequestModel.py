@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from dtos.userDto import UserRegisterDto
+from models.dtos.userDto import UserRegisterDto
 
 
 class UserRegisterRequestModel(BaseModel):

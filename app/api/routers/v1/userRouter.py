@@ -5,7 +5,7 @@ from models.requests.userRegisterRequestModel import UserRegisterRequestModel
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
 from models.baseModel import Login, Token
 from core.authorization import authorize
-from ....core.deps import CurrentUserDep
+from core.deps import CurrentUserDep
 
 # from fastapi.security import OAuth2PasswordRequestForm
 router = APIRouter()

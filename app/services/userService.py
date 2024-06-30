@@ -15,9 +15,10 @@ class UserService:
         user = None
         return ServiceResult[UserDto](data=user, success=True)
 
-    def register(model: User) -> ServiceResult[UserDto]:
+    def register(model: UserDto) -> ServiceResult[UserDto]:
         try:
-            DbSessionDep.add(User)
+            userEntity: User = None
+            DbSessionDep.add(userEntity)
             DbSessionDep.commit()
         except IntegrityError as e:
             DbSessionDep.rollback()
@@ -35,6 +36,6 @@ class UserService:
         result = DbSessionDep.query(User).all()
         return ServiceResult[list[UserDto]](data=result, isSuccess=len(result) > 0)
 
-    def update(model: User) -> ServiceResult[UserDto]: ...
+    def update(model: UserDto) -> ServiceResult[UserDto]: ...
 
     def delete(id: str) -> ServiceResult[UserDto]: ...
