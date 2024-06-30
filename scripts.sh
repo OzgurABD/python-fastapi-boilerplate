@@ -5,19 +5,38 @@ read _command
 
 case $_command in
 
-  createPVE)
-    echo -n "createPVE"
+  create_v_env)
+    echo -n "create_v_env"
     pip install virtualenv && virtualenv .venv
+    # Or
+    # python3 -m venv .venv
     ;;
 
-  activatePVE)
-    echo -n "activatePVE"
+  activate_v_env)
+    echo -n "activate_v_env"
     .venv\Scripts\activate
+    # Or
+    # source .venv/bin/activate
     ;;
 
-  deactivatePVE)
-    echo -n "deactivatePVE"
+  deactivate_v_env)
+    echo -n "deactivate_v_env"
     deactivate
+    ;;
+
+  install)
+    echo -n "install"
+    pip install -r requirements/base.txt
+    ;;
+
+  packs)
+    echo -n "packs"
+    pip list
+    ;;
+
+  dev)
+    echo -n "dev"
+    cd app ; pip uvicorn main:app --host 127.0.0.1 --port 8000 --reload ; cd .. 
     ;;
 
   *)
@@ -25,9 +44,6 @@ case $_command in
     ;;
 esac
 
-
-    # pip list
-    # pip install -r requirements/base.txt
 
     ## To automatically generate a migration script based on your model changes, run:
     # alembic revision --autogenerate -m "Create tables"

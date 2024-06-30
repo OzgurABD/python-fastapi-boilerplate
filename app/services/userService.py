@@ -1,5 +1,7 @@
 """Services module."""
 
+from sqlalchemy import select
+from core.deps import DbSessionDep
 from .iUserService import IUserService
 from database.dbModels import User
 from models.serviceResult import ServiceResult
@@ -21,7 +23,9 @@ class UserService:
 
     def getByEmail(email: str) -> ServiceResult[UserDto]: ...
 
-    def getAll() -> ServiceResult[list[UserDto]]: ...
+    def getAll() -> ServiceResult[list[UserDto]]:
+        result =  DbSessionDep.execute(select(User))  
+        return ServiceResult[list[UserDto]]()
 
     def update(model: User) -> ServiceResult[UserDto]: ...
 

@@ -11,7 +11,6 @@ from core.authentication import contextUser
 
 
 DbSessionDep = Annotated[Session, Depends(getDbSession)]
-
 CurrentUserDep = Annotated[TokenPayload, Depends(contextUser)]
 
 
