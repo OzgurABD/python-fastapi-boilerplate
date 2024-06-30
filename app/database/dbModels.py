@@ -1,29 +1,38 @@
 import uuid
 import datetime
-from pydantic import EmailStr
-from sqlmodel import Field, Relationship, SQLModel
+from pydantic import BaseModel
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, DateTime, ForeignKey, String
+from sqlalchemy.orm import relationship
+
+Base = declarative_base()
 
 
-class BaseTable(SQLModel):
-    id: uuid.UUID = Field(default=uuid.uuid4, primary_key=True)
-    isDelete: bool = False
-    isActive: bool = True
-    cDate: datetime = datetime.datetime.now()
-    mDate: datetime = datetime.datetime.now()
+class BaseTable(BaseModel):
+    id = Column(uuid.UUID, default=uuid.uuid4, primary_key=True)
+    cDate = Column(DateTime, default=datetime.datetime.now)
+    mDate = Column(DateTime, default=datetime.datetime.now)
+    isDelete = Column(bool, default=False)
+    isActive = Column(bool, default=True)
 
 
-class User(BaseTable, table=True):
-    hashedPassword: str
-    email: EmailStr = Field(unique=True, index=True, max_length=255)
-    identityNumber: str = Field(min_length=10, max_length=11)
-    fullName: str | None = Field(default=None, max_length=255)
-    phoneNumber: str | None = Field(default=None, max_length=20)
-    birthday: datetime.time | None = None
-    addresses: list["Address"] = Relationship(back_populates="user")
+class User(Base, BaseTable):
+    __tablename__ = 'users'
+
+    hashedPassword = Column(str, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    identityNumber = Column(String(min=10, max=11),
+                            unique=True, nullable=False)
+    fullName = Column(String(min=3, max=256), nullable=False)
+    phoneNumber = Column(String(20), nullable=True)
+    birthday = Column(DateTime, nullable=True)
 
 
 class Address(BaseTable, table=True):
-    title: str = Field(min_length=1, max_length=255)
-    description: str = Field(min_length=1, max_length=255)
-    userId: int | None = Field(default=None, foreign_key="user.id", nullable=False)
-    user: User | None = Relationship(back_populates="addresses")
+    __tablename__ = 'addresses'
+
+    title = Column(String(50), nullable=False)
+    description = Column(String(256), nullable=False)
+
+    userId = Column(uuid.UUID, ForeignKey('users.id'))
+    user = relationship('User', back_populates='addresses')

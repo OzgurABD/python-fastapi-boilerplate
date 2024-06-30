@@ -4,5 +4,5 @@ from pydantic import BaseModel
 
 
 class ServiceResult(BaseModel, Generic[T]):
-    success: bool
+    isSuccess: bool
     data: Optional[T]
