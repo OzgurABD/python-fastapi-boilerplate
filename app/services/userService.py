@@ -1,7 +1,7 @@
 """Services module."""
 
 from sqlalchemy.exc import IntegrityError
-from core.deps import DbSessionDep
+from api.deps import DbSessionDep
 from .iUserService import IUserService
 from database.dbModels import User
 from models.serviceResult import ServiceResult

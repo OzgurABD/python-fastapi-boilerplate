@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from app.models.commonModel import TokenPayload
+from models.commonModel import TokenPayload
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"

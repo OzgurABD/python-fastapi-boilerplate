@@ -1,11 +1,11 @@
 import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from business.userBusiness import UserBusiness
 from models.requests.userRegisterRequestModel import UserRegisterRequestModel
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
-from app.models.commonModel import Login, Token
+from models.commonModel import Login, Token
 from core.authorization import authorize
-from core.deps import CurrentUserDep
+from api.deps import CurrentUserDep
 
 router = APIRouter()
 

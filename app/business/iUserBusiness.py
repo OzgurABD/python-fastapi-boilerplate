@@ -2,7 +2,7 @@
 
 import uuid
 from abc import ABCMeta, abstractmethod
-from app.models.commonModel import Login, Token
+from models.commonModel import Login, Token
 from models.dtos.userDto import UserRegisterDto
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
 

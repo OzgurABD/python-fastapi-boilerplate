@@ -9,11 +9,11 @@ from services.userService import UserService
 from models.serviceResult import ServiceResult
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
 from models.dtos.userDto import UserDto, UserRegisterDto
-from app.models.commonModel import Token
+from models.commonModel import Token
 
 # from ..services.serviceContainers import Application
 
-
+@IUserBusiness.register
 class UserBusiness(IUserBusiness):
 
     def login(model: Login) -> Token:
