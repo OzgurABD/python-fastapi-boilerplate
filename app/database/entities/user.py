@@ -1,10 +1,8 @@
 import uuid
 import datetime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, String, SmallInteger, DateTime, Uuid
 from sqlalchemy.orm import relationship
-
-Base = declarative_base()
+from dbSession import Base
 
 
 class BaseTable:

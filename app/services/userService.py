@@ -3,7 +3,7 @@
 from sqlalchemy.exc import IntegrityError
 from api.deps import DbSessionDep
 from .iUserService import IUserService
-from database.dbModels import User
+from database.entities.user import User
 from models.serviceResult import ServiceResult
 from models.dtos.userDto import UserDto
 
@@ -17,12 +17,11 @@ class UserService:
         return ServiceResult[UserDto](data=result, success=result != None)
 
     def register(model: UserDto) -> ServiceResult[UserDto]:
-        try:
-            userEntity: User = None
-            DbSessionDep.add(userEntity)
-            DbSessionDep.commit()
-        except IntegrityError as e:
-            DbSessionDep.rollback()
+        userEntity: User = None
+        DbSessionDep.add(userEntity)
+        DbSessionDep.commit()
+        DbSessionDep.refresh(userEntity)
+        return ServiceResult[UserDto](data=userEntity, isSuccess=True)
 
     def forgotPassword(email: str) -> ServiceResult[UserDto]: ...
 
@@ -41,4 +40,10 @@ class UserService:
 
     def update(model: UserDto) -> ServiceResult[UserDto]: ...
 
-    def delete(id: str) -> ServiceResult[UserDto]: ...
+    def delete(id: str) -> ServiceResult[UserDto]:
+        result = DbSessionDep.query(User).filter(User.id == id).first()
+        if not result:
+            return ServiceResult(isSuccess=False)
+        DbSessionDep.delete(result)
+        DbSessionDep.commit()
+        return ServiceResult(isSuccess=True)

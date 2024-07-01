@@ -4,6 +4,7 @@ from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 from api.main import apiRouter
 from core.config import settings
+from api.containers import Container
 from middlewares.exception import ExceptionHandlerMiddleware
 from middlewares.reqResLog import RouterLoggingMiddleware
 from logs.oneLog import oneLogger
@@ -40,10 +41,16 @@ if settings.BACKEND_CORS_ORIGINS:
 app.add_middleware(ExceptionHandlerMiddleware)
 app.add_middleware(RouterLoggingMiddleware)
 
+# Set Container DI
+container = Container()
+app.container = container
+
 # Set Router
-app.include_router(apiRouter, prefix=settings.API_V1_STR, include_in_schema=False)
+app.include_router(apiRouter, prefix=settings.API_V1_STR,
+                   include_in_schema=False)
 
 # initial tables
-# Base.metadata.create_all(bind=engine)
+# db = container.db()
+# db.createDatabase()
 
 oneLogger.info("App Has Started")

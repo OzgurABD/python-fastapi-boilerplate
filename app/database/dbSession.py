@@ -1,20 +1,41 @@
-from collections.abc import AsyncGenerator
-from sqlalchemy import exc
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_sessionmaker,
-    create_async_engine,
-)
-from core.config import settings
+"""Database module."""
+
+from contextlib import contextmanager, AbstractContextManager
+from typing import Callable
+# import logging
+
+from sqlalchemy import create_engine, orm
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+
+# logger = logging.getLogger(__name__)
+
+Base = declarative_base()
 
 
-async def getDbSession() -> AsyncGenerator[AsyncSession, None]:
-    engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI)
-    factory = async_sessionmaker(engine)
-    async with factory() as session:
+class Database:
+
+    def __init__(self, db_url: str) -> None:
+        self._engine = create_engine(db_url, echo=True)
+        self._session_factory = orm.scoped_session(
+            orm.sessionmaker(
+                autocommit=False,
+                autoflush=False,
+                bind=self._engine,
+            ),
+        )
+
+    def createDatabase(self) -> None:
+        Base.metadata.create_all(self._engine)
+
+    @contextmanager
+    def session(self) -> Callable[..., AbstractContextManager[Session]]:
+        session: Session = self._session_factory()
         try:
             yield session
-            await session.commit()
-        except exc.SQLAlchemyError:
-            await session.rollback()
+        except Exception:
+            # logger.exception("Session rollback because of exception")
+            session.rollback()
             raise
+        finally:
+            session.close()
