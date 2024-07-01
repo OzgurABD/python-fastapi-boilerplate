@@ -2,7 +2,7 @@
 
 import uuid
 from abc import ABCMeta, abstractmethod
-from models.baseModel import Login, Token
+from app.models.commonModel import Login, Token
 from models.dtos.userDto import UserRegisterDto
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
 
@@ -19,4 +19,4 @@ class IUserBusiness(metaclass=ABCMeta):
     def getAll() -> UsersResponseModel: ...
 
     @abstractmethod
-    def register(model: UserRegisterDto) -> UsersResponseModel: ...
+    def register(model: UserRegisterDto) -> UserResponseModel: ...

@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session
 from database.dbSession import getDbSession
-from models.baseModel import TokenPayload
+from app.models.commonModel import TokenPayload
 from core.authentication import contextUser
 
 

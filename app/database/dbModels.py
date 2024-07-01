@@ -2,7 +2,7 @@ import uuid
 import datetime
 from pydantic import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, Boolean, Uuid
+from sqlalchemy import Column, ForeignKey, String, SmallInteger, DateTime, Boolean, Uuid
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
@@ -12,8 +12,8 @@ class BaseTable:
     id = Column(Uuid, primary_key=True, default=lambda: str(uuid.uuid4()))
     cDate = Column(DateTime, default=datetime.datetime.now)
     mDate = Column(DateTime, default=datetime.datetime.now)
+    status = Column(SmallInteger, default=True)
     isDelete = Column(Boolean, default=False)
-    isActive = Column(Boolean, default=True)
 
 
 class User(Base, BaseTable):

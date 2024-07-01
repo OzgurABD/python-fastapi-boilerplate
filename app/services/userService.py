@@ -12,8 +12,9 @@ from models.dtos.userDto import UserDto
 class UserService:
 
     def login(email: str, hashedPassword: str) -> ServiceResult[UserDto]:
-        user = None
-        return ServiceResult[UserDto](data=user, success=True)
+        result = DbSessionDep.query(User).filter_by(
+            email=email, hashedPassword=hashedPassword).first()
+        return ServiceResult[UserDto](data=result, success=result != None)
 
     def register(model: UserDto) -> ServiceResult[UserDto]:
         try:
@@ -30,7 +31,9 @@ class UserService:
         return ServiceResult[UserDto](data=result, isSuccess=result != None)
         # TODO Dont Forget session.close() structure
 
-    def getByEmail(email: str) -> ServiceResult[UserDto]: ...
+    def getByEmail(email: str) -> ServiceResult[UserDto]:
+        result = DbSessionDep.query(User).filter_by(email=email).first()
+        return ServiceResult[UserDto](data=result, isSuccess=result != None)
 
     def getAll() -> ServiceResult[list[UserDto]]:
         result = DbSessionDep.query(User).all()

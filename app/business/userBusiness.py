@@ -9,7 +9,7 @@ from services.userService import UserService
 from models.serviceResult import ServiceResult
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
 from models.dtos.userDto import UserDto, UserRegisterDto
-from models.baseModel import Token
+from app.models.commonModel import Token
 
 # from ..services.serviceContainers import Application
 
@@ -25,7 +25,8 @@ class UserBusiness(IUserBusiness):
             )
 
             if result.success != True:
-                raise ValidationException("Incorrect Username Or Password", "UBL.0001")
+                raise ValidationException(
+                    "Incorrect Username Or Password", "UBL.0001")
             else:
                 token = createToken(
                     data={
@@ -56,7 +57,7 @@ class UserBusiness(IUserBusiness):
         except:
             raise BusinessException("Error GetAll Business", "UBGBI.0005")
 
-    def register(model: UserRegisterDto) -> UsersResponseModel:
+    def register(model: UserRegisterDto) -> UserResponseModel:
         pass
 
 

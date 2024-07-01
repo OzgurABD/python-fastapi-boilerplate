@@ -9,7 +9,7 @@ class User(BaseModel):
     phoneNumber: str | None = None
 
 
-class UserResponseModel(User):
+class UserResponseModel(BaseModel):
     data: User
 
 

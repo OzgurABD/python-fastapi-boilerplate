@@ -1,6 +1,6 @@
 import uuid
 from middlewares.exception import ValidationException
-from models.baseModel import Login
+from app.models.commonModel import Login
 
 
 def getByIdValidation(id: uuid.UUID):

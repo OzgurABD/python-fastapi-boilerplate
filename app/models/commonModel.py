@@ -1,15 +1,14 @@
 from typing import Generic, Optional
 from annotated_types import T
 from pydantic import BaseModel
-from sqlmodel import SQLModel
 
 
-class Token(SQLModel):
+class Token(BaseModel):
     token: str
     tokenType: str = "bearer"
 
 
-class TokenPayload(SQLModel):
+class TokenPayload(BaseModel):
     userId: str | None = None
     userName: str | None = None
     roles: list | None = None
@@ -27,5 +26,5 @@ class PaginateModel(BaseModel, Generic[T]):
     totalCount: int
 
 
-class Message(SQLModel):
+class Message(BaseModel):
     message: str

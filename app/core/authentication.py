@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from models.baseModel import TokenPayload
+from app.models.commonModel import TokenPayload
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
@@ -25,7 +25,8 @@ def hashPassword(password):
 
 def createToken(
     data: dict,
-    expires_delta: Optional[timedelta] = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+    expires_delta: Optional[timedelta] = timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
 ):
     _claims = data.copy()
     expire = datetime.now() + expires_delta
