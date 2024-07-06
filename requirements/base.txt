@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlmodel
+SQLAlchemy
+psycopg2-binary
+alembic
+pydantic
+pydantic-settings
+python-dotenv
+bcrypt
+python-multipart
+python-jose[cryptography]
+sentry-sdk
+# jwt==1.3.1
