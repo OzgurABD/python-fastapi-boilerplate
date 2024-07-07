@@ -2,7 +2,7 @@ import uuid
 import datetime
 from typing import List, Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, String, SmallInteger, DateTime, Uuid
+from sqlalchemy import ForeignKey, String, SmallInteger, DateTime, Uuid, Boolean
 from ..session import Base
 
 # fmt: off
@@ -12,6 +12,7 @@ class BaseTable:
     cDate: Mapped[DateTime] = mapped_column(DateTime, default=datetime.datetime.now())
     mDate: Mapped[DateTime] = mapped_column(DateTime, default=None, nullable=True)
     status: Mapped[SmallInteger] = mapped_column(SmallInteger, default=None, nullable=True)
+    isDelete: Mapped[Boolean] = mapped_column(Boolean, default=False)
 
 
 class User(Base, BaseTable):

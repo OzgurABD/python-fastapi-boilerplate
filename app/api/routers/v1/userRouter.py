@@ -33,7 +33,7 @@ async def getById(id: uuid.UUID, currentUser=CurrentUserDep, db=DbSessionDep) ->
     return MapToUserModel(result)
 
 
-@router.update("/{id}", response_model=UserResponseModel)
+@router.put("/{id}", response_model=UserResponseModel)
 @authorize(role=ADMIN)
 async def update(id: uuid.UUID, model: UserRequestModel, currentUser=CurrentUserDep, db=DbSessionDep) -> UserResponseModel:
     result: UserDto = _userBusiness.update(id, model, db)

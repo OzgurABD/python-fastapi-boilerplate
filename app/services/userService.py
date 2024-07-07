@@ -62,7 +62,7 @@ class UserService(IUserService):
         result: User = db.query(User).filter(User.id == id).first()
         if not result:
             return ServiceResult(isSuccess=False)
-        result.status = 99
+        result.isDelete = True
         db.commit()
         return ServiceResult(isSuccess=True)
 
