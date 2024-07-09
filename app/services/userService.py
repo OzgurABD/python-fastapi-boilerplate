@@ -40,8 +40,10 @@ class UserService(IUserService):
         _data = None if result == None else MapUserEntityToUserDto(result)
         return ServiceResult[UserDto](data=_data, isSuccess=_data != None)
 
-    def getAll(db: Session) -> ServiceResult[list[UserDto]]:
+    def getAll(q: list[str], db: Session) -> ServiceResult[list[UserDto]]:
         result: list[User] = db.query(User).all()
+        if q:
+            result.update({"q": q})
         _data = None if result == None else MapUsersEntityToUsersDto(result)
         return ServiceResult[list[UserDto]](data=_data, isSuccess=len(_data) > 0)
 

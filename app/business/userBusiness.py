@@ -68,7 +68,7 @@ class UserBusiness(IUserBusiness):
             raise BusinessException(
                 USER_BUSINESS_LOGIC_LOGIN_ERROR_MSG, USER_BUSINESS_LOGIC_LOGIN_ERROR_CODE)
 
-    def getAll(db: Session) -> list[UserDto]:
+    def getAll(q: list[str], db: Session) -> list[UserDto]:
         try:
             result: ServiceResult[list[UserDto]] = UserService.getAll(db)
             return result.data

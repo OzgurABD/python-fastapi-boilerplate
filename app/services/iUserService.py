@@ -10,7 +10,7 @@ class IUserService(metaclass=ABCMeta):
 
     @abstractmethod
     def login(email: str, db: Session) -> ServiceResult[UserLoginDto]: ... #fmt:off
-
+    #fmt:on
     @abstractmethod
     def register(model: UserDto, db: Session) -> ServiceResult[UserDto]: ...
 
@@ -24,7 +24,7 @@ class IUserService(metaclass=ABCMeta):
     def getByEmail(email: str, db: Session) -> ServiceResult[UserDto]: ...
 
     @abstractmethod
-    def getAll(db: Session) -> ServiceResult[list[UserDto]]: ...
+    def getAll(q: list[str], db: Session) -> ServiceResult[list[UserDto]]: ...
 
     @abstractmethod
     def update(id: str, model: UserDto, db: Session) -> UserDto: ...
@@ -34,4 +34,3 @@ class IUserService(metaclass=ABCMeta):
 
     @abstractmethod
     def hardDelete(id: str, db: Session) -> bool: ...
-

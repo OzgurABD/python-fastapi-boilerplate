@@ -1,6 +1,5 @@
 """Interface class module."""
 
-import uuid
 from abc import ABCMeta, abstractmethod
 from sqlalchemy.orm import Session
 from models.commonModel import Login, Token
@@ -19,7 +18,7 @@ class IUserBusiness(metaclass=ABCMeta):
     def getById(id: str, db: Session) -> UserDto: ...
 
     @abstractmethod
-    def getAll(db: Session) -> list[UserDto]: ...
+    def getAll(q: list[str], db: Session) -> list[UserDto]: ...
 
     @abstractmethod
     def update(id: str, model: UserDto, db: Session) -> UserDto: ...

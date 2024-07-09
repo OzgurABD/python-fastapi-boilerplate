@@ -1,7 +1,7 @@
 """Endpoints module."""
 
 import uuid
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from constants import ADMIN, SUPER_ADMIN
 from core.authorization import authorize
 from dependencies import DbSessionDep, CurrentUserDep
@@ -56,6 +56,6 @@ async def hardDelete(id: uuid.UUID, currentUser=CurrentUserDep, db=DbSessionDep)
 
 @router.get("/getAll/", response_model=UsersResponseModel)
 @authorize(role=SUPER_ADMIN)
-async def getAll(currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
-    result: list[UserDto] = _userBusiness.getAll(db)
+async def getAll(q: list[str] | None = Query(default=None), currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
+    result: list[UserDto] = _userBusiness.getAll(q, db)
     return MapToUsersModel(result)
