@@ -6,6 +6,7 @@ from api.main import apiRouter
 from core.config import settings
 from middlewares.exception import ExceptionHandlerMiddleware
 from middlewares.reqResLog import RouterLoggingMiddleware
+from middlewares.i18n import I18nMiddleware
 from logs.oneLog import oneLogger
 
 
@@ -39,6 +40,7 @@ if settings.BACKEND_CORS_ORIGINS:
 
 app.add_middleware(ExceptionHandlerMiddleware)
 app.add_middleware(RouterLoggingMiddleware)
+app.add_middleware(I18nMiddleware)
 
 
 # Set Router

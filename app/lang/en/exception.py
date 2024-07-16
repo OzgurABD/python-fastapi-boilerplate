@@ -1,0 +1,17 @@
+locale = {
+    'validation_get_by_id': 'Id cannot be empty.',
+    'validation_login_username': 'UserName cannot be empty.',
+    'validation_login_password': 'Password cannot be empty.',
+    'logic_login_incorrect_info': 'Check your data',
+    'logic_login_error': 'Error Login Business',
+    'logic_login_get_by_id': 'Not Found User',
+    'logic_get_by_id_error': 'Error GetById Business',
+    'logic_get_all_error': 'Error GetAll Business',
+    'logic_register_error': 'Error Register Business',
+    'logic_update': 'Check your data',
+    'logic_update_error': 'Error Update Business',
+    'logic_soft_delete': 'Check your data',
+    'logic_soft_delete_error': 'Error SoftDelete Business',
+    'logic_hard_delete': 'Check your data',
+    'logic_hard_delete_error': 'Error HardDelete Business',
+}
