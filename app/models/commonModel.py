@@ -19,11 +19,28 @@ class Login(BaseModel):
     password: str | None = None
 
 
-class PaginateModel(BaseModel, Generic[T]):
-    data: Optional[T]
-    pageNumber: int
-    pageSize: int
-    totalCount: int
+class PaginationQuery(BaseModel):
+    page: int | None = 1
+    size: int | None = 25
+    order: str | None = "cDate"
+
+
+class PaginationModel(BaseModel):
+    total: int | None = None
+    pages: int | None = None
+    page: int | None = None
+    size: int | None = None
+
+
+class ResponseModel(BaseModel, Generic[T]):
+    data: Optional[T] | None = None
+
+
+class ResponsePaginationModel(BaseModel, ResponseModel):
+    total: int | None = None
+    pages: int | None = None
+    page: int | None = None
+    size: int | None = None
 
 
 class Message(BaseModel):

@@ -1,3 +1,4 @@
+from models.commonModel import ResponsePaginationModel
 from models.dtos.userDto import UserDto
 from models.responses.userResponseModel import UserModel, UserResponseModel, UsersResponseModel
 
@@ -10,5 +11,10 @@ def MapToUserModel(model: UserDto) -> UserResponseModel:
     return UserResponseModel(data=MapUserDtoToUserModel(model))
 
 
-def MapToUsersModel(model: list[UserDto]) -> UsersResponseModel:
-    return UsersResponseModel(data=list(map(MapUserDtoToUserModel, model)))
+def MapToUsersModel(model: ResponsePaginationModel[list[UserDto]]) -> UsersResponseModel:
+    return UsersResponseModel(
+        data=list(map(MapUserDtoToUserModel, model)),
+        total=model.total,
+        pages=model.pages,
+        page=model.page,
+        size=model.size)

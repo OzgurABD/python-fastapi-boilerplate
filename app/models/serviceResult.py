@@ -6,3 +6,10 @@ from pydantic import BaseModel
 class ServiceResult(BaseModel, Generic[T]):
     isSuccess: bool
     data: Optional[T] | None = None
+
+
+class ServicePaginationResult(BaseModel, ServiceResult):
+    total: int | None = None
+    pages: int | None = None
+    page: int | None = None
+    size: int | None = None

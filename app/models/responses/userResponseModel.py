@@ -1,5 +1,6 @@
 import uuid
 from pydantic import BaseModel
+from models.commonModel import ResponsePaginationModel
 
 
 class UserModel(BaseModel):
@@ -13,5 +14,5 @@ class UserResponseModel(BaseModel):
     data: UserModel
 
 
-class UsersResponseModel(BaseModel):
+class UsersResponseModel(BaseModel, ResponsePaginationModel):
     data: list[UserModel]
