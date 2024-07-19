@@ -14,5 +14,5 @@ class UserResponseModel(BaseModel):
     data: UserModel
 
 
-class UsersResponseModel(BaseModel, ResponsePaginationModel):
+class UsersResponseModel(ResponsePaginationModel):
     data: list[UserModel]

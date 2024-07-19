@@ -36,7 +36,7 @@ class ResponseModel(BaseModel, Generic[T]):
     data: Optional[T] | None = None
 
 
-class ResponsePaginationModel(BaseModel, ResponseModel):
+class ResponsePaginationModel(ResponseModel):
     total: int | None = None
     pages: int | None = None
     page: int | None = None

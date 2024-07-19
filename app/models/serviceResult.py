@@ -8,7 +8,7 @@ class ServiceResult(BaseModel, Generic[T]):
     data: Optional[T] | None = None
 
 
-class ServicePaginationResult(BaseModel, ServiceResult):
+class ServicePaginationResult(ServiceResult):
     total: int | None = None
     pages: int | None = None
     page: int | None = None
