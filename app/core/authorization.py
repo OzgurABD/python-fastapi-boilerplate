@@ -8,7 +8,7 @@ def authorize(role: str):
         async def wrapper(*args, **kwargs):
             userRole = kwargs.get("currentUser").role
             if role != userRole:
-                raise AuthException("User is not authorized", "AUR.001")
+                raise AuthException("User is not authorized", "AUR.002")
             return await func(*args, **kwargs)
 
         return wrapper

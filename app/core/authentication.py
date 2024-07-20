@@ -1,9 +1,10 @@
+import bcrypt
 from typing import Optional
 from datetime import datetime, timedelta
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-import bcrypt
+from middlewares.exception import AuthException
 from models.commonModel import TokenPayload
 
 SECRET_KEY = "secret"
@@ -43,5 +44,5 @@ async def contextUser(token: str = Depends(oauth2_scheme)):
         if userId is None:
             return None
     except JWTError:
-        return None
+        raise AuthException("User is not authorized", "AUR.001")
     return TokenPayload(userId=userId, userName=userName, role=role)
