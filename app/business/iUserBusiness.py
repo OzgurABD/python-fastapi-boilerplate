@@ -2,7 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 from sqlalchemy.orm import Session
-from models.commonModel import Login, Token, PaginationQuery, ResponseModel, ResponsePaginationModel
+from models.commonModel import Login, Token, ResponseModel, ResponsePaginationModel
 from models.dtos.userDto import UserDto
 
 
@@ -18,7 +18,7 @@ class IUserBusiness(metaclass=ABCMeta):
     def getById(id: str, db: Session) -> ResponseModel[UserDto]: ...
 
     @abstractmethod
-    def getAll(p: PaginationQuery, q: list[str], db: Session) -> ResponsePaginationModel[list[UserDto]]: ... #fmt:off
+    def getAll(params:dict, db: Session) -> ResponsePaginationModel[list[UserDto]]: ... #fmt:off
 
     @abstractmethod
     def update(id: str, model: UserDto, db: Session) -> ResponseModel[UserDto]: ...

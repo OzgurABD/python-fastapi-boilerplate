@@ -3,7 +3,6 @@
 from sqlalchemy.orm import Session
 from .iUserService import IUserService
 from database.entities.user import User
-from models.commonModel import PaginationQuery
 from models.serviceResult import ServiceResult, ServicePaginationResult
 from models.dtos.userDto import UserDto, UserLoginDto
 from mappers.mapToDto.userDtoMapper import MapUserEntityToUserDto, MapUsersEntityToUsersDto, MapUserEntityToUserLoginDto
@@ -41,20 +40,20 @@ class UserService(IUserService):
         _data = None if result == None else MapUserEntityToUserDto(result)
         return ServiceResult[UserDto](data=_data, isSuccess=_data != None)
 
-    def getAll(p: PaginationQuery, q: list[str], db: Session) -> ServicePaginationResult[list[UserDto]]:
+    def getAll(params: dict, db: Session) -> ServicePaginationResult[list[UserDto]]:
         _query = db.query(User)
 
-        if q:
-            _query = _query.filter_by(q)
+        if params:
+            _query = _query.filter_by(params)
 
         _count = _query.count()
-        result: list[User] = _query.order_by(User[p.order]).slice(
-            (p.page-1)*p.size, p.page*p.size).all()
+        result: list[User] = _query.order_by(User[params.order]).slice(
+            (params.page-1)*params.size, params.page*params.size).all()
 
         _data = None if result == None else MapUsersEntityToUsersDto(result)
 
         return ServicePaginationResult[list[UserDto]](
-            data=_data, isSuccess=len(_data) > 0, total=_count, pages=int(_count/p.size)+1, page=p.page, size=p.size)
+            data=_data, isSuccess=len(_data) > 0, total=_count, pages=int(_count/params.size)+1, page=params.page, size=params.size)
 
     def update(id: str, model: UserDto, db: Session) -> ServiceResult[UserDto]:
         result: User = db.query(User).filter(User.id == id).first()

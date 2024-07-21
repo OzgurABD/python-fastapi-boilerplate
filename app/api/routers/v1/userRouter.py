@@ -4,7 +4,7 @@ import uuid
 from fastapi import APIRouter, Query
 from constants import ADMIN, SUPER_ADMIN
 from core.authorization import authorize
-from dependencies import DbSessionDep, CurrentUserDep
+from dependencies import DbSessionDep, CurrentUserDep, CommonParamsDep
 from containers import userBusiness as _userBusiness
 from models.requests.userRequestModel import UserRequestModel
 from models.responses.userResponseModel import UserResponseModel, UsersResponseModel
@@ -55,6 +55,6 @@ async def hardDelete(id: uuid.UUID, currentUser=CurrentUserDep, db=DbSessionDep)
 
 @router.get("/getAll/", response_model=UsersResponseModel)
 @authorize(role=SUPER_ADMIN)
-async def getAll(p: PaginationQuery, q: list[str] | None = Query(default=None), currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
-    result: ResponsePaginationModel[list[UserDto]] = _userBusiness.getAll(p, q, db) #fmt:off 
+async def getAll(params=CommonParamsDep, currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
+    result: ResponsePaginationModel[list[UserDto]] = _userBusiness.getAll(params, db) #fmt:off 
     return MapToUsersModel(result) #fmt:on
