@@ -1,5 +1,5 @@
 """Services module."""
-
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from .iUserService import IUserService
 from database.entities.user import User
@@ -46,14 +46,19 @@ class UserService(IUserService):
         if params["email"]:
             _query = _query.filter_by(email=params["email"])
 
+        if params["orderType"] == "desc":
+            _query = _query.order_by(desc(params["orderBy"]))
+        else:
+            _query = _query.order_by(params["orderBy"])
+
         _count = _query.count()
-        result: list[User] = _query.order_by(User[params.order]).slice(
-            (params.page-1)*params.size, params.page*params.size).all()
+        result: list[User] = _query.slice(
+            (params["page"]-1)*params["size"], params["page"]*params["size"]).all()
 
         _data = None if result == None else MapUsersEntityToUsersDto(result)
 
         return ServicePaginationResult[list[UserDto]](
-            data=_data, isSuccess=len(_data) > 0, total=_count, pages=int(_count/params.size)+1, page=params.page, size=params.size)
+            data=_data, isSuccess=len(_data) > 0, total=_count, pages=int(_count/params["size"])+1, page=params["page"], size=params["size"])
 
     def update(id: str, model: UserDto, db: Session) -> ServiceResult[UserDto]:
         result: User = db.query(User).filter(User.id == id).first()

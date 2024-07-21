@@ -6,8 +6,8 @@ from models.commonModel import TokenPayload
 from core.authentication import contextUser
 
 
-async def commonParams(page: int | None = 1, size: int | None = 25, order: str | None = "cDate"):
-    return {"page": page, "size": size, "order": order}
+async def commonParams(page: int | None = 1, size: int | None = 25, orderBy: str | None = "cDate", orderType: str | None = "asc"):
+    return {"page": page, "size": size, "orderBy": orderBy, "orderType": orderType}
 
 DbSessionDep: Session = Depends(dbSession)
 CurrentUserDep: TokenPayload = Depends(contextUser)
