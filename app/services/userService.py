@@ -43,8 +43,8 @@ class UserService(IUserService):
     def getAll(params: dict, db: Session) -> ServicePaginationResult[list[UserDto]]:
         _query = db.query(User)
 
-        if params:
-            _query = _query.filter_by(params)
+        if params["email"]:
+            _query = _query.filter_by(email=params["email"])
 
         _count = _query.count()
         result: list[User] = _query.order_by(User[params.order]).slice(

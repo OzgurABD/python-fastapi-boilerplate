@@ -55,6 +55,6 @@ async def hardDelete(id: uuid.UUID, currentUser=CurrentUserDep, db=DbSessionDep)
 
 @router.get("/getAll/", response_model=UsersResponseModel)
 @authorize(role=SUPER_ADMIN)
-async def getAll(params=CommonParamsDep, currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
-    result: ResponsePaginationModel[list[UserDto]] = _userBusiness.getAll(params, db) #fmt:off 
+async def getAll(email: str | None = None, params=CommonParamsDep, currentUser=CurrentUserDep, db=DbSessionDep) -> UsersResponseModel:
+    result: ResponsePaginationModel[list[UserDto]] = _userBusiness.getAll({**params, **{"email": email}}, db) #fmt:off 
     return MapToUsersModel(result) #fmt:on
